@@ -1,0 +1,54 @@
+.dash-container {
+    margin : 0px 0px 0px 0px;
+}
+
+.legend {
+    display: flex;
+    list-style: none;
+}
+
+.legend li {
+    margin: 2% 0% 2% 30%;
+}
+
+.deck {
+        min-height: 300px;
+        width: 40%;
+        padding: 10px;
+        border: 2px solid black;
+        margin-bottom: 3%;
+        margin-left: 10%;
+}
+
+.reserved {
+    box-sizing: content-box;  
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    margin: 4% 7% 4% 3%;
+    border: 1px solid grey;
+    background-color: grey;
+    color: black;
+    font-size: large;
+    font-weight: 800
+}
+
+.unreserved {
+    box-sizing: content-box;  
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    margin: 4% 7% 4% 3%;
+    border: 1px solid green;
+    background-color: green;
+    color: white;
+    font-size: large;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+  width: 100%;
+}

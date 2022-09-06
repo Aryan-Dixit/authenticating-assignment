@@ -1,0 +1,67 @@
+.navbar-top {
+    background-color: black;
+}
+
+.nav-menu {
+    justify-content: left;
+    top: 0;
+}
+
+.nav-menu #active{
+    background-color: blue;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    width: 20%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+}
+
+.nav-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+}
+
+.nav-list {
+    background-color: black;
+}
+
+.nav-list.clicked {
+    display: none;
+}
+
+.nav-text {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+}
+
+.nav-text a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    width: 19%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+}
+
+.nav-text a:hover {
+    background-color: blue;
+}
+
+span {
+    margin-left: 16px;
+    margin-right: 16px;
+}
