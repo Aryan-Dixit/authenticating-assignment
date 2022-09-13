@@ -34,6 +34,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function UserForm({ open, onClose, passengerList ,bookingData, bookSeat }) {
   const classes = useStyles();
+  const [editedKey, setEditedKey] = React.useState(false);
+  
+  const [timer, setTimer] = React.useState(0);
+  const [bookState, setBookState] = React.useState(false);
+  const timeCount = () => setTimer(timer - 1);
+
   const [userData, setUserData] = React.useState({
         firstName : bookingData.firstName, 
         lastName : bookingData.lastName, 
@@ -44,6 +50,8 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
   const [disable, setDisable] = React.useState(false);
 
   React.useEffect(() => {
+    setTimer(59);
+    setBookState(false);
     setUserData({
         firstName : bookingData.firstName, 
         lastName : bookingData.lastName, 
@@ -53,9 +61,27 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
     });
   },[bookingData]);
 
+  React.useEffect(
+    () => {
+        if (timer <= 0) {
+          setBookState(true);
+            return;
+        }
+        const id = setInterval(timeCount, 1000);
+        return () => clearInterval(id);
+    },
+    [timer]
+  );
+
   const setInput = (e) => {
     setDisable(false);
     setUserData(prev => ({...prev, [e.target.name]: e.target.value}));
+  }
+
+  const changeEmail = (e) => {
+    setDisable(false);
+    setEditedKey(true);
+    setUserData(prev => ({...prev, [e.target.name] : e.target.value}));
   }
 
   const onCancel = () => {
@@ -70,7 +96,7 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
   }
 
   const onSubmit = () => {
-        var edgeCheck = passengerList.reduce((total,passengerData) => total + (passengerData.email === userData.email), 0);
+        var edgeCheck = editedKey && passengerList.reduce((total,passengerData) => total + (passengerData.email === userData.email), 0);
         if(edgeCheck) {
             alert("Email Already exists");
         } else {
@@ -100,22 +126,24 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{"Please provide the Passenger Details"}</DialogTitle>
-        <DialogContent>      
+        <DialogContent>
+            {bookState || <div>Booking Expires in : {timer}</div>}      
             <div className={classes.root}>
                 <TextField name="firstName" value={userData.firstName} onChange={e => setInput(e)} label="First Name" variant="filled" required />
                 <TextField name="lastName"  value={userData.lastName} onChange={e => setInput(e)} label="Last Name"  variant="filled" required />
-                <TextField name="email"     value={userData.email} onChange={e => setInput(e)} label="Email" variant="filled" type="email" required />
+                <TextField name="email"     value={userData.email} onChange={e => changeEmail(e)} label="Email" variant="filled" type="email" required />
                 <TextField label="Seat Number" value={bookingData.seatNo} disabled/>
                 <TextField value={bookingData.date} disabled />
             </div>
             {disable && <span style={{ color: "red" }}>Enter All the details Properly</span>}
+            {bookState && <span style={{ color: "red" }}>Booking Time Expired! Please Try Again !!</span>}
         </DialogContent>
         <DialogActions>
         <FormGroup row>
            <Button onClick={onCancel}  variant="contained" className={classes.cancelButton}>
                 Cancel
            </Button>
-           <Button onClick={onSubmit} variant="contained" className={classes.submitButton}>
+           <Button onClick={onSubmit} variant="contained" className={classes.submitButton} disabled={bookState}>
                 Confirm Now !!!
            </Button>
         </FormGroup>
