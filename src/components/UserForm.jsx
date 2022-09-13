@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function UserForm({ open, onClose, passengerList ,bookingData, bookSeat }) {
   const classes = useStyles();
-  const [editedKey, setEditedKey] = React.useState(false);
+  const [editedKey, setEditedKey] = React.useState("");
   
   const [timer, setTimer] = React.useState(0);
   const [bookState, setBookState] = React.useState(false);
@@ -59,6 +59,7 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
         seatNo : bookingData.seatNo,
         date : bookingData.date
     });
+    setEditedKey(bookingData.email);
   },[bookingData]);
 
   React.useEffect(
@@ -78,12 +79,6 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
     setUserData(prev => ({...prev, [e.target.name]: e.target.value}));
   }
 
-  const changeEmail = (e) => {
-    setDisable(false);
-    setEditedKey(true);
-    setUserData(prev => ({...prev, [e.target.name] : e.target.value}));
-  }
-
   const onCancel = () => {
     setUserData({
         firstName : "", 
@@ -92,11 +87,12 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
         seatNo : bookingData.seatNo,
         date : bookingData.date
     });
+    setEditedKey("");
     onClose();
   }
 
   const onSubmit = () => {
-        var edgeCheck = editedKey && passengerList.reduce((total,passengerData) => total + (passengerData.email === userData.email), 0);
+        var edgeCheck = userData.email !== editedKey && passengerList.reduce((total,passengerData) => total + (passengerData.email === userData.email), 0);
         if(edgeCheck) {
             alert("Email Already exists");
         } else {
@@ -131,7 +127,7 @@ export default function UserForm({ open, onClose, passengerList ,bookingData, bo
             <div className={classes.root}>
                 <TextField name="firstName" value={userData.firstName} onChange={e => setInput(e)} label="First Name" variant="filled" required />
                 <TextField name="lastName"  value={userData.lastName} onChange={e => setInput(e)} label="Last Name"  variant="filled" required />
-                <TextField name="email"     value={userData.email} onChange={e => changeEmail(e)} label="Email" variant="filled" type="email" required />
+                <TextField name="email"     value={userData.email} onChange={e => setInput(e)} label="Email" variant="filled" type="email" required />
                 <TextField label="Seat Number" value={bookingData.seatNo} disabled/>
                 <TextField value={bookingData.date} disabled />
             </div>
